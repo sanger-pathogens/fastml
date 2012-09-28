@@ -6,6 +6,7 @@
 #include "stochasticProcess.h"
 #include "tree.h"
 #include "codon.h"
+#include "nucleotide.h"
 
 #include "suffStatComponent.h"
 
@@ -34,6 +35,8 @@ private:
 	void getStartingStochasticProcess();
 	void createStochasticProcessVec();
 	Vdouble computeFreq(codon &codonAlph);
+	Vdouble computeGTRFreq(nucleotide &nucAlph);
+	Vdouble freqGTR(const sequenceContainer &nucSc, nucleotide * nucAlph);
 	
 	// get starting tree
 	void getStartingEvolTreeTopology();

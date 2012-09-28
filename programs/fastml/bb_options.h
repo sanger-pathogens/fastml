@@ -32,7 +32,7 @@ public:
 	boundMethods boundMethod;
 	bool verbose; // if true: print starting tree to the file: start_tree
 //	tree::TREEformats outputFormat;
-	enum modelNameOptions {day,jtt,lg,rev,wag,cprev,nucjc,aajc,nyCodon,empiriCodon};
+	enum modelNameOptions {day,jtt,lg,rev,wag,cprev,nucjc,nucgtr,aajc,nyCodon,empiriCodon};
 	modelNameOptions modelName;
 	int alphabet_size;
 	bool removeGapsPosition;

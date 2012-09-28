@@ -19,6 +19,7 @@
 #include "nexusFormat.h"
 #include "nucleotide.h"
 #include "nucJC.h"
+#include "gtrModel.h"
 #include "nj.h"
 #include "phylipFormat.h"
 #include "readDatMatrix.h"
@@ -57,7 +58,9 @@ mainbb::mainbb(int argc, char* argv[]) {
 			findAncestralSequencesHomJoint();		
 		}
 	}
-	getMarginalReconstruction();
+	else{
+		getMarginalReconstruction();
+	}
 	myLog::endLog();
 }
 
@@ -241,6 +244,15 @@ void mainbb::getStartingStochasticProcess() {
 			probMod=new nucJC;
 			pijAcc = new trivialAccelerator(probMod);
 			cout<<"Nucleotide substitution model is Jukes and Cantor"<<endl;
+			break;
+		case (bb_options::nucgtr):
+			{
+			nucleotide nucAlph;
+			Vdouble freq = computeGTRFreq(nucAlph);
+			probMod=new gtrModel(freq, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25);
+			pijAcc = new trivialAccelerator(probMod);
+			cout<<"Nucleotide substitution model is General time Reversible"<<endl;
+			}
 			break;
 		case (bb_options::aajc):
 			probMod=new aaJC; pijAcc = new trivialAccelerator(probMod);
@@ -462,6 +474,74 @@ void mainbb::getMarginalReconstruction(){
 	pi = freqCodonF3x4(nucSc,&codonAlph);
 	makeSureNoZeroFreqs(pi);
 	return pi;
+}
+
+ Vdouble mainbb::computeGTRFreq(nucleotide &nucAlph){
+	Vdouble pi;
+	nucleotide alph;
+	sequenceContainer nucSc;
+	ifstream in(_options->seqfile.c_str());
+	nucSc = recognizeFormat::readUnAligned(in, &alph);
+	nucSc.changeGaps2MissingData();
+	in.close();
+	pi = freqGTR(nucSc,&nucAlph);
+	makeSureNoZeroFreqs(pi);
+	return pi;
+	
+}
+Vdouble mainbb::freqGTR(const sequenceContainer &nucSc, nucleotide * nucAlph){
+	Vdouble freqGTR(nucAlph->size(),0.0);
+	int pos= 0;
+	int nPos = 0;
+	
+//	freqGTR.resize(nucSc.alphabetSize(),0.0);
+
+	sequenceContainer::constTaxaIterator tIt;
+	sequenceContainer::constTaxaIterator tItEnd;
+	tIt.begin(nucSc);
+	tItEnd.end(nucSc);
+	while (tIt!= tItEnd) {
+		pos = 0;
+		sequence::constIterator sIt;
+		sequence::constIterator sItEnd;
+		sIt.begin(*tIt);
+		sItEnd.end(*tIt);
+		while (sIt != sItEnd) {
+			if ((*sIt >= 0) && (*sIt <freqGTR.size())) ++freqGTR[(*sIt)];
+			if (*sIt == 4) ++freqGTR[3]; //for T (4) to U (3)
+			++sIt;
+			++pos;
+		}
+		++tIt;
+	}
+	changeCountsToFreqs(freqGTR);
+
+
+	/*Vdouble freqGTR(nucAlph->size(),0.0);
+
+	nucleotide n;
+	for (int c = 0; c<freqGTR.size();c++){
+
+		string s = nucAlph->fromInt(c);
+		int nuc0 = n.fromChar(s[0]);
+		int nuc1 = n.fromChar(s[1]);
+		int nuc2 = n.fromChar(s[2]);
+		freqCodon[c] = nucFeqPos[0][nuc0]*nucFeqPos[1][nuc1]*nucFeqPos[2][nuc2];
+	}
+
+	MDOUBLE sum=0;
+	for (int i=0;i<coAlph->size();i++){
+		sum+=freqCodon[i];
+	}
+	MDOUBLE stopFreq  = 1.0 - sum;
+	MDOUBLE  ep = stopFreq/coAlph->size();
+	for (int i=0;i<coAlph->size();i++){
+		freqGTR[i]+=ep;
+	}*/
+
+	return freqGTR;
+
+
 }
 
  void mainbb::replaceSequences(sequenceContainer &sc2change,sequenceContainer &originSc)

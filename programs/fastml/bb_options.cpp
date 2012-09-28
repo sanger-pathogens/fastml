@@ -59,6 +59,7 @@ bb_options::bb_options(int& argc, char *argv[]):
 					case 'c': case 'C':  modelName=cprev;alphabet_size=20; break;
 					case 'a': case 'A':  modelName=aajc;alphabet_size=20; break;
 					case 'n': case 'N':  modelName=nucjc;alphabet_size=4; break;
+					case 'g': case 'G':  modelName=nucgtr;alphabet_size=4; break;
 					case 'e': case 'E':  modelName=empiriCodon;alphabet_size=61; break;
 					case 'y': case 'Y':  modelName=nyCodon;alphabet_size=61; break;
 					default:modelName=jtt;alphabet_size=20;
@@ -139,6 +140,9 @@ string bb_options::modelNameStr() const
 		break;
 	case nucjc:
 		res = "NUC_JC";
+		break;
+	case nucgtr:
+		res = "NUC_GTR";
 		break;
 	case aajc:
 		res = "AA_JC";
