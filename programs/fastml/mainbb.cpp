@@ -67,7 +67,7 @@ mainbb::mainbb(int argc, char* argv[]) {
 void mainbb::printAncestralSequencesGammaJoint() {
 	replaceSequences(_resulutingJointReconstruction,_originSc);
 	ofstream out(_options->outFile_seq_joint.c_str());
-	out<<"sequences of the joint reconstruction, model: "<<_options->modelNameStr()<<endl;
+	//out<<"sequences of the joint reconstruction, model: "<<_options->modelNameStr()<<endl;
 	switch (_options->seqOutputFormat){
 		case (bb_options::mase)   : maseFormat::write(out,_resulutingJointReconstruction); break;
 		case (bb_options::fasta)  : fastaFormat::write(out,_resulutingJointReconstruction); break;
@@ -356,7 +356,7 @@ void mainbb::findAncestralSequencesHomJoint() {
 	sequenceContainer withAncestral = jng.getTheJointReconstruction();
 	replaceSequences(withAncestral,_originSc);
 	ofstream jointNoGammaReconstructionOutputFile(_options->outFile_seq_joint.c_str());
-	jointNoGammaReconstructionOutputFile<<"sequences of the joint reconstruction, model (hom): "<<_options->modelNameStr()<<endl;
+	//jointNoGammaReconstructionOutputFile<<"sequences of the joint reconstruction, model (hom): "<<_options->modelNameStr()<<endl;
 	switch (_options->seqOutputFormat) {
 	case bb_options::mase: 
 			 maseFormat::write(jointNoGammaReconstructionOutputFile,withAncestral);
