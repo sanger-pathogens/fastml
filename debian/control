@@ -1,0 +1,13 @@
+Source: fastml2
+Section: misc
+Priority: extra
+Maintainer: Aidan Delaney <aidan@ontologyengineering.org>
+Build-Depends: debhelper (>= 8.0.0), make
+Standards-Version: 3.9.4
+Vcs-Git: https://github.com/sanger-pathogens/fastml
+
+Package: fastml2
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Maximum likelihood reconstruction of ancestral amino-acid sequences.
+  A branch-and-bound algorithm for the inference of ancestral amino-acid sequences when the replacement rate varies among sites.
