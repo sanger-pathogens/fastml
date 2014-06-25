@@ -3,7 +3,7 @@ fastml2 (2.2) saucy; urgency=medium
   * Proper Debian package.
   * Incorporates some of AndrewJPage's source-level fixes.
 
- -- Aidan Delaney <aidan@ontologyengineering.org>  Wed, 23 Apr 2014 13:16:49 +0100
+ -- Aidan Delaney (Packaging Key) <aidan@ontologyengineering.org>  Wed, 23 Apr 2014 13:16:49 +0100
 
 fastml2 (2.2) unstable; urgency=low
 
