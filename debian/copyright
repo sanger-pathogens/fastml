@@ -1,0 +1,9 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: fastml
+Source: https://github.com/sanger-pathogens/fastml
+
+Files: *
+Copyright: 2012-2014 bioSequence@tauex.tau.ac.il
+
+License: All Rights Reserved
+ This code is not open-source, see http://fastml.tau.ac.il/source.html.

@@ -25,6 +25,16 @@ Vdouble getSubDiagonalFromMatrix(VVdouble &mat);
 //get the first norm sum{abs(Mij)}
 MDOUBLE getMatrixNorm(const VVdouble &mat);
 
+template<typename _T>
+void resizeMatrix(vector<vector< _T> > &mat, int rows, int columns){
+	mat.resize(rows);
+	for (int i=0; i<rows;i++){
+		mat[i].resize(columns);
+		for (int j=0;j<columns;j++){ // initializing all values as zero
+			mat[i][j] = 0.0;
+		}
+	}
+}
 
 template<typename _T>
 void unitMatrix(vector<vector< _T> > &m, int n){
@@ -80,17 +90,6 @@ vector<vector< _T> > multiplyMatrixByScalar(const vector<vector< _T> > &mat, MDO
 		}
 	}
 	return mat_copy;
-}
-
-template<typename _T>
-void resizeMatrix(vector<vector< _T> > &mat, int rows, int columns){
-	mat.resize(rows);
-	for (int i=0; i<rows;i++){
-		mat[i].resize(columns);
-		for (int j=0;j<columns;j++){ // initializing all values as zero
-			mat[i][j] = 0.0;
-		}
-	}
 }
 
 template<typename _T>
