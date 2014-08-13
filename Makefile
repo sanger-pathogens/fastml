@@ -36,13 +36,16 @@ tags: libs/*/*.cpp libs/*/*.h programs/*/*.h programs/*/*.cpp
 	etags --members --language=c++ $^ 
 
 dist:
+	rm -rf ${PACKAGE_NAME}-${PACKAGE_VERSION}
 	mkdir ${PACKAGE_NAME}-${PACKAGE_VERSION}
-	cp -R -t ${PACKAGE_NAME}-${PACKAGE_VERSION} debian libs programs Makefile Readme.md
+	rm -rf libs/phylogeny/*.o libs/phylogeny/*.a programs/fastml/*.o programs/fastml/*.a
+	cp -R debian libs programs Makefile Readme.md ${PACKAGE_NAME}-${PACKAGE_VERSION}
 	tar czvf ${PACKAGE_NAME}-${PACKAGE_VERSION}.tar.gz ${PACKAGE_NAME}-${PACKAGE_VERSION}
 	rm -rf ${PACKAGE_NAME}-${PACKAGE_VERSION}
 
 release: dist
 	vagrant up
+	vagrant ssh -c "sudo apt-get update"
 	vagrant provision
 	vagrant ssh -c "tar xzvf /vagrant/${PACKAGE_NAME}-${PACKAGE_VERSION}.tar.gz"
 	vagrant ssh -c "cd ${PACKAGE_NAME}-${PACKAGE_VERSION} && dpkg-buildpackage -uc -us -rfakeroot"
