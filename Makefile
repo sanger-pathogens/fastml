@@ -49,4 +49,7 @@ release: dist
 	vagrant provision
 	vagrant ssh -c "tar xzvf /vagrant/${PACKAGE_NAME}-${PACKAGE_VERSION}.tar.gz"
 	vagrant ssh -c "cd ${PACKAGE_NAME}-${PACKAGE_VERSION} && dpkg-buildpackage -uc -us -rfakeroot"
+	vagrant ssh -c "cp ${PACKAGE_NAME}_${PACKAGE_VERSION}_amd64.deb /vagrant"
+	vagrant ssh -c "cp ${PACKAGE_NAME}_${PACKAGE_VERSION}_amd64.changes /vagrant"
+	vagrant ssh -c "cp ${PACKAGE_NAME}_${PACKAGE_VERSION}.tar.gz /vagrant"
 	vagrant halt
