@@ -2,10 +2,10 @@ package { "dh-make":
     ensure => "installed"
     }
 
-package { "gcc":
+package { ["gcc", "build-essential", "pkg-config", "devscripts"]:
     ensure => "installed"
     }
 
-package { "build-essential":
+package {"language-pack-en":
     ensure => "installed"
     }
