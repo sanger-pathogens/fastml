@@ -1,3 +1,9 @@
+fastml2 (2.2~trusty1) trusty; urgency=medium
+
+  * Packaging tweaks
+
+ -- Andrew Page <ap13@sanger.ac.uk>  Wed, 13 Aug 2014 15:29:49 +0100
+
 fastml2 (2.2) saucy; urgency=medium
 
   * Proper Debian package.

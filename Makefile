@@ -2,7 +2,7 @@
 
 # Copying autoconf style
 PACKAGE_NAME=fastml2
-PACKAGE_VERSION=2.2
+PACKAGE_VERSION=2.2~trusty1
 
 all: libs programs
 
@@ -38,10 +38,22 @@ tags: libs/*/*.cpp libs/*/*.h programs/*/*.h programs/*/*.cpp
 dist:
 	rm -rf ${PACKAGE_NAME}-${PACKAGE_VERSION}
 	mkdir ${PACKAGE_NAME}-${PACKAGE_VERSION}
-	rm -rf libs/phylogeny/*.o libs/phylogeny/*.a programs/fastml/*.o programs/fastml/*.a
+	rm -rf libs/phylogeny/*.o libs/phylogeny/*.a programs/fastml/*.o programs/fastml/*.a programs/fastml/fastml
 	cp -R debian libs programs Makefile Readme.md ${PACKAGE_NAME}-${PACKAGE_VERSION}
 	tar czvf ${PACKAGE_NAME}-${PACKAGE_VERSION}.tar.gz ${PACKAGE_NAME}-${PACKAGE_VERSION}
 	rm -rf ${PACKAGE_NAME}-${PACKAGE_VERSION}
+
+source: dist
+	vagrant up
+	vagrant ssh -c "sudo apt-get update"
+	vagrant provision
+	vagrant ssh -c "tar xzvf /vagrant/${PACKAGE_NAME}-${PACKAGE_VERSION}.tar.gz"
+	vagrant ssh -c "dpkg-source -rfakeroot -b ${PACKAGE_NAME}-${PACKAGE_VERSION}"
+	vagrant ssh -c "cd ${PACKAGE_NAME}-${PACKAGE_VERSION} && dpkg-genchanges -S > ../${PACKAGE_NAME}_${PACKAGE_VERSION}_amd64.changes"
+	vagrant ssh -c "cp ${PACKAGE_NAME}_${PACKAGE_VERSION}.dsc /vagrant"
+	vagrant ssh -c "cp ${PACKAGE_NAME}_${PACKAGE_VERSION}_amd64.changes /vagrant"
+	vagrant ssh -c "cp ${PACKAGE_NAME}_${PACKAGE_VERSION}.tar.gz /vagrant"
+	vagrant halt
 
 release: dist
 	vagrant up
@@ -53,3 +65,4 @@ release: dist
 	vagrant ssh -c "cp ${PACKAGE_NAME}_${PACKAGE_VERSION}_amd64.changes /vagrant"
 	vagrant ssh -c "cp ${PACKAGE_NAME}_${PACKAGE_VERSION}.tar.gz /vagrant"
 	vagrant halt
+  # You need to sign the changes files with gpg before uploading to ubuntu ppa
