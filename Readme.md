@@ -23,8 +23,14 @@ Pupko, T. and Pe'er I. 2000.
 Maximum likelihood reconstruction of ancestral amino-acid sequences.
 Currents in Computational Molecular Biology. Ed. Miyano, S., Shamir, R, and Takagi, T. pp. 184-185. Universal Academy Press, Tokyo, Japan. [pdf]
 
+To install from source:
+autoreconf -i
+./configure
+make
+make install
 
-
-
-
+To install on Ubuntu (trusty):
+sudo apt-get-repository ppa:ap13/gubbins
+sudo apt-get update
+sudo apt-get install fastml2
 
