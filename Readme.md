@@ -1,6 +1,6 @@
 This repository provides some additional functionality to fastml to allow it to work with Gubbins.
 The original code is available from http://fastml.tau.ac.il/source.html and should be your first port of call.
-
+To modify the original code, or use parts of it for other purposes, permission should be requested. Please contact Tal Pupko: talp@post.tau.ac.il
 
 In citing the FASTML server please refer to:
 
