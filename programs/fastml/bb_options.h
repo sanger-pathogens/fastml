@@ -4,10 +4,10 @@
 
 #ifndef __STDC__
 #define __STDC__ 1
-#include "getopt.h"
+#include "pgetopt.h"
 #undef __STDC__
 #else
-#include "getopt.h"
+#include "pgetopt.h"
 #endif
 
 #include "definitions.h"
