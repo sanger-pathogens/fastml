@@ -28,6 +28,7 @@ void jointNoGamma::compute() {
 		doubleRep likelihoodOfPos = 0;
 
 		vector<int> res =computeJointAncestralFromSSC(pos,ssc,sscJointNoGam,likelihoodOfPos);
+		
 		treeIterDownTopConst tIt(_et);
 		for (tree::nodeP mynode = tIt.first(); mynode != tIt.end(); mynode = tIt.next()) {
 			if (mynode->isInternal()) { 
@@ -60,7 +61,7 @@ void jointNoGamma::fillComputeUp(const int pos,
 				}
 				//cerr<<"val =" << val <<" "; // REMOVE!
 				//cerr<<"_pi->data(mynode->id(),pos)= "<<_pi->data(mynode->id(),pos)<<" ";//REMOVE
-				ssc.set(mynode->id(),letterInFather,totalVal);
+				ssc.set(mynode->id(),letterInFather,log(totalVal));
 				sscJointNoGam.set(mynode->id(),letterInFather,_sc[seqID][pos]);
 			}
 		}
@@ -69,14 +70,15 @@ void jointNoGamma::fillComputeUp(const int pos,
 				doubleRep maxProb=0.0;
 				int bestLet = -1;
 				for (int let=0; let<_cpih.alphabetSize();++let) {
-					doubleRep tmpProb = 1;
+					doubleRep tmpProb = 0.0;
 					if (mynode->isRoot() == false) {
-						tmpProb *= _cpih.getPij(mynode->id(),letterInFather,let);
+						tmpProb += log(_cpih.getPij(mynode->id(),letterInFather,let));
 					}
 					for(int i=0; i < mynode->getNumberOfSons();++i){				
-						tmpProb *= ssc.get(mynode->getSon(i)->id(),let);
+						tmpProb += ssc.get(mynode->getSon(i)->id(),let);
 					}
-					if (tmpProb>maxProb) {
+					
+					if (let==0 || tmpProb>maxProb) {
 						maxProb = tmpProb;
 						bestLet = let;
 					}
@@ -107,7 +109,7 @@ vector<int> jointNoGamma::computeJointAncestralFromSSC(
 		} else {//special case of the root
 			MDOUBLE maxL = VERYSMALL;
 			int bestCharInRoot = sscFASTML.get(mynode->id(),0);
-			likelihoodOfReconstruction = ssc.get(mynode->id(),0)*_sp.freq(bestCharInRoot);;
+			likelihoodOfReconstruction = ssc.get(mynode->id(),0)+log(_sp.freq(bestCharInRoot));;
 			res[mynode->id()] = bestCharInRoot;
 		}
 	}
@@ -129,9 +131,9 @@ void jointNoGamma::outputTheJointProbAtEachSite(const string & outputFileProbJoi
 	ofstream jointProbOutput(outputFileProbJoint.c_str());
 	MDOUBLE totalLogLikelihood =0;
 	for (int j=0; j < _jointLikelihoodOfPositions.size(); ++j) {
-		totalLogLikelihood+=log(_jointLikelihoodOfPositions[j]);
+		totalLogLikelihood+=_jointLikelihoodOfPositions[j];
 		jointProbOutput<<"Joint log likelihood of position "<<j+1;// j+1 so that positions start from 1, and not from 0.
-		jointProbOutput<<": "<<log(_jointLikelihoodOfPositions[j])<<endl;
+		jointProbOutput<<": "<<_jointLikelihoodOfPositions[j]<<endl;
 	}
 	jointProbOutput<<"total log likelihood of joint reconstruction: "<<totalLogLikelihood<<endl;
 	jointProbOutput.close();
