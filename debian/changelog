@@ -1,4 +1,4 @@
-fastml2 (2.2~trusty1) trusty; urgency=medium
+fastml2 (2.3~trusty1) trusty; urgency=medium
 
   * log probabilities bug fix
 
