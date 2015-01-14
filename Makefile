@@ -2,7 +2,7 @@
 
 # Copying autoconf style
 PACKAGE_NAME=fastml2
-PACKAGE_VERSION=2.2~trusty1
+PACKAGE_VERSION=2.3~trusty1
 
 all: libs programs
 
